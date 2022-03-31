@@ -17,16 +17,33 @@ pip install -r requirements.txt
 !pip install wandb
 ```
 ## PART A : Training from Scratch
-1. Buidling a small CNN network with 5 convolution layers can be done by using the following method :
+1. Dataset for training and validation is prepared using the following functions :
+  * Un-augmented Dataset: 
+  ```python 
+  get_data()
+  ```
+  * Augmented Dataset:
+  ```python 
+  get_augmented_data()
+  ```
+2. Buidling a small CNN network with 5 convolution layers can be done by using the following method :
 ```python
 build_cnn(conv_activation , dense_activation, num_filters, conv_filter_size, pool_filter_size, batch_norm, dense_layer, dropout)
 ```
 where :
- 1. conv_activation     : dtype="List"    activation used for convolution layer
- 2. dense_act           : dtype="String"  acitvation used for densely connected layers
- 3. num_filters         : dtype="List"    number of activation filters for each layer
- 4. conv_filter_size    : dtype="List"    kernel sizes for convultion layers
- 5. pool_filter_size    : dtype="List"    kernel sizes for maxpooling layers
- 6. batch_norm          : dtype="Boolean" set to True, if you are using batch normalization
- 7. dim_final           : dtype="Integer" dimensionality of output space after 5 blocks of convultion, maxpooling blocks
- 8. dropout             : dtype="float or double" specify the dropout % for regularization (in decimals)
+  *`conv_activation`     : dtype="List"    activation used for convolution layer
+  * `dense_act`           : dtype="String"  acitvation used for densely connected layers
+  * `num_filters`         : dtype="List"    number of activation filters for each layer
+  * `conv_filter_size`   : dtype="List"    kernel sizes for convultion layers
+  * `pool_filter_size`    : dtype="List"    kernel sizes for maxpooling layers
+  * `batch_norm`          : dtype="Boolean" set to True, if you are using batch normalization
+  * `dim_final`          : dtype="Integer" dimensionality of output space after 5 blocks of convultion, maxpooling blocks
+  * `dropout`             : dtype="float or double" specify the dropout % for regularization (in decimals)
+3. The different hyper parameter configurations are specified in the following method
+```python
+sweeper(entity_name, project_name)
+```
+where
+  *`entity_name` : Enter the wandb entity name
+  *`project_name` : Enter teh wandb project name
+5. 
