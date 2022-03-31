@@ -21,3 +21,12 @@ pip install -r requirements.txt
 ```python
 build_cnn(conv_activation , dense_activation, num_filters, conv_filter_size, pool_filter_size, batch_norm, dense_layer, dropout)
 ```
+where :
+ 1. conv_activation     : dtype="List"    activation used for convolution layer
+ 2. dense_act           : dtype="String"  acitvation used for densely connected layers
+ 3. num_filters         : dtype="List"    number of activation filters for each layer
+ 4. conv_filter_size    : dtype="List"    kernel sizes for convultion layers
+ 5. pool_filter_size    : dtype="List"    kernel sizes for maxpooling layers
+ 6. batch_norm          : dtype="Boolean" set to True, if you are using batch normalization
+ 7. dim_final           : dtype="Integer" dimensionality of output space after 5 blocks of convultion, maxpooling blocks
+ 8. dropout             : dtype="float or double" specify the dropout % for regularization (in decimals)
