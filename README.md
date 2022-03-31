@@ -97,7 +97,7 @@ guided_backpropagation(neuron_number, conv_layer)
 ```
 where
  * `neuron_number`: The neuron at which you want to see the pattern
- * `conv_layer`: The layer at which you want to visulate the patter
+ * `conv_layer`: The layer at which you want to visualize the pattern
 
 ---
 ## PART B : Using a Pre-Trained Model for Image Classification Task
