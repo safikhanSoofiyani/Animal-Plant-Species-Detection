@@ -526,7 +526,7 @@ def testing(entity_name, project_name):
 
 
 
-def testing_cnn(batch_norm, num_filters, filter_org, dropout, data_augmentation, num_epochs, batch_size, dense_layer, learning_rate, kernel_size):
+def testing_cnn(batch_norm, num_filters, filter_org, dropout, data_augmentation, num_epochs, batch_size, dense_layer, learning_rate, kernel_size, dense_activation, conv_activ):
 
     '''
     This function is used to train the model based on the hyperparameters given
@@ -545,14 +545,16 @@ def testing_cnn(batch_norm, num_filters, filter_org, dropout, data_augmentation,
     # dense_layer         : "int" how many neurons in the dense layer
     # learning_rate       : "float" what learning rate to use to train the model
     # kernel_size         : "int" the size of each kernel
+    # dense_activation    : "str" the activation function for dense layer
+    # conv_activ     : "str" the activation function for convolution layer
     
     
     It doesnt return anything
     '''
     
     #defining the activation function for each conv layer
-    conv_activation = ["relu","relu","relu","relu","relu"]
-    dense_activation = "relu"
+    conv_activation = [conv_activ, conv_activ, conv_activ, conv_activ, conv_activ]
+    #dense_activation = "relu"
     
     #print(filter_org)
     #print(type(filter_org))
@@ -633,6 +635,8 @@ if __name__ == "__main__":
     parser.add_argument('--denseLayer', type=int, required=('no' in argv), help="Dense Layer size: integer value")
     parser.add_argument('--learningRate', type=float, required=('no' in argv), help="Learning Rate: float value")
     parser.add_argument('--kernelSize', type=int, required=('no' in argv), help="Kernel Size: integer value")
+    parser.add_argument('--denseAct', type=str, required=('no' in argv), help="Dense Layer Activation function: string value")
+    parser.add_argument('--convAct', type=str, required=('no' in argv), help="Conv Layer Activation function: string value")
     
     args = parser.parse_args()
     
@@ -650,7 +654,9 @@ if __name__ == "__main__":
         dense_layer = args.denseLayer
         learning_rate = args.learningRate
         kernel_size = args.kernelSize
-        model = testing_cnn(batch_norm, num_filters, filter_org, dropout, data_augmentation, num_epochs, batch_size, dense_layer, learning_rate, kernel_size)
+        dense_activation = args.denseAct
+        conv_activation = args.convAct
+        model = testing_cnn(batch_norm, num_filters, filter_org, dropout, data_augmentation, num_epochs, batch_size, dense_layer, learning_rate, kernel_size, dense_activation, conv_activation)
         
     else:
         sweeper(entity_name, project_name)
