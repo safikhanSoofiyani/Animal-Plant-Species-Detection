@@ -1,7 +1,9 @@
 # CS6910-Assignment-2 : Convolutional Neural Networks
-Assignment 2 submission for the course CS6910 Fundamentals of Deep Learning. 
+Assignment 2 submission for the course CS6910 Fundamentals of Deep Learning. <br>
+Check this link for the task description: [Assignment link](https://wandb.ai/miteshk/assignments/reports/Assignment-2--Vmlldzo0NjA1MTU)
 
-Team Members : Vamsi Sai Krishna Malineni (OE20S302), Mohammed Safi Ur Rahman Khan (CS21M035) 
+
+Team Members : **Vamsi Sai Krishna Malineni (OE20S302)**, **Mohammed Safi Ur Rahman Khan (CS21M035)** 
 
 ---
 ## General Instructions:
@@ -10,18 +12,64 @@ Team Members : Vamsi Sai Krishna Malineni (OE20S302), Mohammed Safi Ur Rahman Kh
 ```python 
 pip install -r requirements.txt
 ```
-2. The solution to the assignment is divided into two parts: `PART A` and `PART B`. You can find the juypter notebooks in the respective folders.
+2. The solution to the assignment is divided into two parts: `PART A` and `PART B`. You can find the juypter notebooks in the respective folders. Along with jupyter notebooks we have also given python code filed (.py) files. These contain the code to direclty train and test the CNN in a non interactive way.
 
-3. The jupyter notebooks can be run sequentially cell wise.
+3. For seeing the outputs and the various explanations, and how the code has developed, please check the jupyter notebooks (i.e., .ipynb files for both part A and part B). For training and testing the CNN model from command line, run the (.py) file by following the instructions given in below sections.
 
 4. If you are running the jupyter notebooks on colab, the libraries from the `requirements.txt` file are preinstalled, with the `exception` of `wandb`. You can install wandb by using the following command :
 ```python
 !pip install wandb
 ```
-5. The dataset for this assignment can be found at : https://storage.googleapis.com/wandb_datasets/nature_12K.zip
+5. The dataset for this assignment can be found at : [Dataset Link](https://storage.googleapis.com/wandb_datasets/nature_12K.zip)
 ---
-## PART A : Training from Scratch
-<br/> 1. Dataset for training and validation is prepared using the following functions :
+# PART A : Training from Scratch
+## Running the code
+As mentioned earlier, there are two files in the folder of Part A. One is a jupyter notebook and the other is the python code file.<br>
+The jupyter notebook has the outputs still intact so that can be used for reference. <br>
+The python file has all the functions and the code used in the jupyter file (along with some additional code that can be used to run from the command line)<br>
+<br>
+### Running the python file from the terminal
+The python file can be run from the terminal by passing the various command line arguments. Please make sure that the unzipped folder of the dataset is as it is present in the same directory as this python file<br>
+There are two modes of running this file <br> <br>
+**1. Running the hyperparameter sweeps using wandb**<br>
+```sh
+python assgn2.py --sweep yes
+```
+The code will now run in the sweep mode and will enable wandb integration and log all the data in wand. Make sure you have wandb installed if you want to run in this mode. Also, change the entity name and project name in the code before running in this mode<br> <br>
+**2. Running in normal mode**<br>
+```sh
+python assgn2.py --sweep no --batchNorm xxx --numFilters xxx --filterOrg xxx --dropout xxx --dataAugment xxx --numEpochs xxx --batchSize xxx --denseLayer xxx --learningRate xxx --kernelSize xxx --denseAct xxx --convAct xxx
+```
+Replace `xxx` in above with the appropriate parameter you want to train the model with<br>
+For example: 
+
+```sh
+python assgn2.py --sweep no --batchNorm True --numFilters 32 --filterOrg 2 --dropout 0.4 --dataAugment False --numEpochs 10 --batchSize 128 --denseLayer 512 --learningRate 0.0001 --kernelSize 3 --denseAct relu --convAct relu
+```
+**Description of various command line arguments**<br>
+1. `--sweep` : Do you want to sweep or not: Enter 'yes' or 'no'. If this is 'yes' then below arguments are not required. Enter below arguments only if this is 'no'<br>
+2. `--batchNorm` : Batch Normalization: True or False <br>
+3. `--numFilters` : Number of Filters: integer value <br>
+4. `--filterOrg` : Filter Organization: float value
+5. `--dropout` : Dropout: float value
+6. `--dataAugment` : Data Augmentation: True or False
+7. `--numEpochs` : Number of Epochs: integer value
+8. `--batchSize` : Batch Size: integer value
+9. `--denseLayer` : Dense Layer size: integer value
+10. `--learningRate` : Learning Rate: float value
+11. `--kernelSize` : Kernel Size: integer value
+12. `--denseAct` : Dense Layer Activation function: string value
+13. `--convAct` : Conv Layer Activation function: string value
+
+
+### Running the jupyter notebook
+
+This can be run in a sequential manner. i.e., one cell at a time. This notebook also has the code for plotting the various images required for the assignment.
+
+
+## General Functions Description
+### 1. Getting Train Dataset 
+<br/>  Dataset for training and validation is prepared using the following functions :
   * Un-augmented Dataset: 
   ```python 
   get_data()
@@ -30,21 +78,23 @@ pip install -r requirements.txt
   ```python 
   get_augmented_data()
   ```
-<br/> 2. Buidling a small CNN network with 5 convolution layers can be done by using the following method :
+### 2. Building Model
+<br/>  Buidling a small CNN network with 5 convolution layers can be done by using the following method :
 ```python
 build_cnn(conv_activation , dense_activation, num_filters, conv_filter_size, pool_filter_size, batch_norm, dense_layer, dropout)
 ```
 where :
-  *`conv_activation`     : dtype="List"    activation used for convolution layer
-  * `dense_act`           : dtype="String"  acitvation used for densely connected layers
+  * `conv_activation`     : dtype="List"    activation used for convolution layer
+  * `dense_activation`    : dtype="String"  acitvation used for densely connected layers
   * `num_filters`         : dtype="List"    number of activation filters for each layer
-  * `conv_filter_size`   : dtype="List"    kernel sizes for convultion layers
+  * `conv_filter_size`    : dtype="List"    kernel sizes for convultion layers
   * `pool_filter_size`    : dtype="List"    kernel sizes for maxpooling layers
   * `batch_norm`          : dtype="Boolean" set to True, if you are using batch normalization
-  * `dim_final`          : dtype="Integer" dimensionality of output space after 5 blocks of convultion, maxpooling blocks
+  * `dim_final`           : dtype="Integer" dimensionality of output space after 5 blocks of convultion, maxpooling blocks
   * `dropout`             : dtype="float or double" specify the dropout % for regularization (in decimals)
 
-<br/> 3. The different hyper parameter configurations are specified in the following method
+### 3. Hyperparameter Sweeps
+<br/> The hyperparamter sweeps can be run using the following method
 ```python
 sweeper(entity_name, project_name)
 ```
@@ -52,7 +102,7 @@ where
   * `entity_name` : Enter the wandb entity name
   * `project_name` : Enter the wandb project name
 
-<br/> 4. The configuration for wandb sweeps is :
+<br/>  The various hyperparameters used are :
 ```python
 hyperparameters={
     'batch_norm':        {'values':[True, False]},
@@ -71,7 +121,9 @@ sweep_config = {
       'parameters': hyperparameters
     }
 ```
-<br/> The following function will define the model, trains the model according to the hyperparameters given to it by wandb and logs the metrics to wandb.
+
+### 4. Training the model
+<br/> The following function will define the model, train the model according to the hyperparameters given to it by wandb and logs the metrics to wandb.
 
 ```python
  train()
@@ -80,31 +132,79 @@ sweep_config = {
 ```python 
 sweeper(entity_name,project_name)
 ```
-<br/> 5. Use the following function to generate test dataset to determine the test accuracy of model with best performance in terms of validation accuracy.
+### 5. Getting Test Dataset
+<br/>  Use the following function to generate test dataset to determine the test accuracy of model with best performance in terms of validation accuracy.
 ```python
 get_test_data()
 ```
-<br/> 6. Use the following function to determine the test accuracy of the best performing model, and log the metrics to wandb
+
+### 6. Testing the best model
+<br/> Use the following function to determine the test accuracy of the best performing model, and log the metrics to wandb
 ```python
 testing(entity_name,project_name)
 ```
-<br/> 7. The trained model can be accessed at: https://drive.google.com/file/d/1aInmPFMV_rpJI_xPDP45h7XD4sGi1KaC/view?usp=sharing
+<br/> - The best trained model can be accessed at: https://drive.google.com/file/d/1aInmPFMV_rpJI_xPDP45h7XD4sGi1KaC/view?usp=sharing
 
-<br/> 8. Guided Backpropagation with modified ReLU activation function is performed, and the patterns that excite the neurons are plotted and logged into wandb. 
-<br/> The guided backpropagation is performed using this function:
-```python
-guided_backpropagation(neuron_number, conv_layer)
-```
-where
- * `neuron_number`: The neuron at which you want to see the pattern
- * `conv_layer`: The layer at which you want to visualize the pattern
+<br><br> The ipynb file contains all the necessary plots and the code to get them. The plots include<br>
+1. Plotting images with their true and predicted labels<br>
+2. Plotting the filters and the feature maps for a random image<br>
+3. Visualizing 10 random neurons using guided backpropagation
 
 ---
-## PART B : Using a Pre-Trained Model for Image Classification Task
+# PART B : Fine tuning a Pre-trained model
+## Running the code
+As mentioned earlier, there are two files in the folder of Part B. One is a jupyter notebook and the other is the python code file.<br>
+The jupyter notebook has the outputs still intact so that can be used for reference. <br>
+The python file has all the functions and the code used in the jupyter file (along with some additional code that can be used to run from the command line)<br>
+<br>
+### Running the python file from the terminal
+The python file can be run from the terminal by passing the various command line arguments. Please make sure that the unzipped folder of the dataset is as it is present in the same directory as this python file <br>
+There are two modes of running this file <br> <br>
+**1. Running the hyperparameter sweeps using wandb**<br>
+```sh
+python assgn2B.py --sweep yes
+```
+The code will now run in the sweep mode and will enable wandb integration and log all the data in wandb. Make sure you have wandb installed if you want to run in this mode. Also, change the entity name and project name in the code before running in this mode<br> <br>
+**2. Running in normal mode**<br>
+```sh
+python assgn2B.py --sweep no --model xxx --dropout xxx --dataAugment xxx --numEpochs xxx --batchSize xxx --denseLayer xxx --learningRate xxx --trainLayers xxx --denseAct xxx
+```
+Replace `xxx` in above with the appropriate parameter you want to train the model with<br>
+For example: 
 
-<br/> 1. The images are resized to `(256,256,3)` irrespective of the size of the image from the dataset.
+```sh
+python assgn2B.py --sweep no --model Xception --dropout 0.3 --dataAugment False --numEpochs 10 --batchSize 32 --denseLayer 128 --learningRate 0.001 --trainLayers 10 --denseAct relu
+```
+**Description of various command line arguments**<br>
+1. `--sweep` : Do you want to sweep or not: Enter 'yes' or 'no'. If this is 'yes' then below arguments are not required. Enter below arguments only if this is 'no'<br>
+2. `--model` : Pretrained model to use: string value <br>
+3. `--dropout` : Dropout: float value
+4. `--dataAugment` : Data Augmentation: True or False
+5. `--numEpochs` : Number of Epochs: integer value
+6. `--batchSize` : Batch Size: integer value
+7. `--denseLayer` : Dense Layer size: integer value
+8. `--learningRate` : Learning Rate: float value
+9. `--trainLayers` : Number of trainable layers: integer value
+10. `--denseAct` : Dense Layer Activation function: string value
 
-<br/> 2. The following function is used to build a model based on a pretrained model:
+### Running the jupyter notebook
+
+This can be run in a sequential manner. i.e., one cell at a time. This notebook also has the code for plotting the various images required for the assignment.
+
+
+## General Functions Description
+### 1. Getting Train Dataset 
+<br/>  Dataset for training and validation is prepared using the following functions :
+  * Un-augmented Dataset: 
+  ```python 
+  get_data()
+  ```
+  * Augmented Dataset:
+  ```python 
+  get_augmented_data()
+  ```
+### 2. Building Model
+<br/> The following function is used to build a model based on a pretrained model:
 ```python 
 build_model(model_name, dense_activation, dense_layer, dropout, trainable_layers)
 ```
@@ -114,20 +214,26 @@ where
  * `dense_layer`          : Enter the number of units in the dense layer ("Integer")
  * `dropout`              : Enter the percent of drop out in decimals ("Double/float")
  * `trainable_layers`     : Enter the number of layers to be tuned ("Integer")
-
-<br/> 3. The available models for pretraining are :
+<br>
+The available models for pretraining are :
  * `ResNet50`
  * `InceptionV3`
  * `InceptionResNetV2`
  * `Xception`
 
-<br/> 4. Training with wandb: Use the following function to perform wandb sweeping 
-```python 
-wandb_train()
-```
-<br/>  The hyperparameters for sweeping are :
+
+### 3. Hyperparameter Sweeps
 ```python
-hyperparameters = {"model_name":{'values': ["InceptionV3", "ResNet50", "InceptionResNetV2", "Xception"]},
+sweeper(entity_name, project_name)
+```
+where
+  * `entity_name` : Enter the wandb entity name
+  * `project_name` : Enter the wandb project name
+
+<br/>  The various hyperparameters used are :
+```python
+hyperparameters = {
+        "model_name":{'values': ["InceptionV3", "ResNet50", "InceptionResNetV2", "Xception"]},
         "data_augmentation": {"values": [True, False]},
         "dense_layer": {"values": [64, 128, 256, 512]},
         "dropout": {"values": [0.0, 0.1, 0.2, 0.3]},        
@@ -141,7 +247,18 @@ sweep_config = {
   "parameters": hyperparameters
    }
 ```
-<br/> 5. The test data can be accessed using the following function:
+### 4. Training the model
+<br/> The following function will define the model, train the model according to the hyperparameters given to it by wandb and logs the metrics to wandb.
+
+```python
+ wandb_train()
+``` 
+<br/>Use the following function to run the wandb sweeps 
+```python 
+sweeper(entity_name,project_name)
+```
+### 5. Getting Test Dataset
+<br/> The test data can be accessed using the following function:
 * Un-augmented data: Use this function if the best model for your data set returns that data augmentation is not necessary
 ```python 
 get_test_data()
@@ -150,9 +267,11 @@ get_test_data()
 ```python
 get_test_augmented_data()
 ```
-<br/> 6. Run the following code, to test the best performing model on the test dataset
-```python 
-testing(entity_name, project_name)
+
+### 6. Testing the best model
+<br/> Use the following function to determine the test accuracy of the best performing model, and log the metrics to wandb
+```python
+testing(entity_name,project_name)
 ```
 
 ## RESULTS
