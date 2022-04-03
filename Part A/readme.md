@@ -1,4 +1,5 @@
 # PART A : Training from Scratch
+**NOTE:** Since the ipynb file is large, it may not render properly on GitHub. So, kindly download the file to view in jupyter or use [nbviewer.org](nbviewer.org) to view this notebook
 ## Running the code
 As mentioned earlier, there are two files in the folder of Part A. One is a jupyter notebook and the other is the python code file.<br>
 The jupyter notebook has the outputs still intact so that can be used for reference. <br>
