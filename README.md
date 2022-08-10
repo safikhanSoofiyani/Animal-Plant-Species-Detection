@@ -3,7 +3,7 @@
 Check this link for the task description: [link](https://wandb.ai/miteshk/assignments/reports/Assignment-2--Vmlldzo0NjA1MTU)
 
 
-Team Members : **Mohammed Safi Ur Rahman Khan **,**Vamsi Sai Krishna Malineni**,  
+Team Members : **Mohammed Safi Ur Rahman Khan**, **Vamsi Sai Krishna Malineni**
 
 ---
 ## General Instructions:
